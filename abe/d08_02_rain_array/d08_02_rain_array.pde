@@ -2,6 +2,12 @@ int amount = 100;
 float[] x;
 float[] y;
 
+/* exersize: try adding three more arrays
+  one for the sizes of objects, 
+  one for horizontal speed,
+  one for vertical speed
+*/
+
 void setup() {
   size(600, 600);
   
