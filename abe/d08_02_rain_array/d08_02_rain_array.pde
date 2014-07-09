@@ -21,14 +21,23 @@ int amount = 100;
 // Tell Processing that x and y are float arrays.
 float[] x;
 float[] y;
+float[] sz;
+int[] colors;
+float[] xspeed;
+float[] yspeed;
 
 void setup() {
   size(600, 600);
+  colorMode(HSB);
 
   // Here you reserve space for your array elements.
   // You are saying: my array will have N elements.
   x = new float[amount];
   y = new float[amount];
+  sz = new float[amount];
+  colors = new int[amount];
+  xspeed = new float[amount];
+  yspeed = new float[amount];
 
   // By default our arrays contain just 0's, and our
   // circles would be all in the same position (0, 0).
@@ -37,6 +46,10 @@ void setup() {
   for (int i=0; i<amount; i++) {
     x[i] = random(width);
     y[i] = random(height);
+    sz[i] = random(5, 20);
+    colors[i] = color(random(255));
+    xspeed[i] = random(1, 5);
+    yspeed[i] = random(1, 5); 
   }
 }
 void draw() {
@@ -46,10 +59,11 @@ void draw() {
   for (int i=0; i<amount; i++) {
     // We can not write here just "x", we have to specify
     // which x are we talking about. Remember that "x" is
-    // a collection of floats, not just one.  
-    ellipse(x[i], y[i], 40, 40);
-    x[i] += 5;
-    y[i] += 7;
+    // a collection of floats, not just one.
+    fill(colors[i]);  
+    ellipse(x[i], y[i], sz[i], sz[i]);
+    x[i] += xspeed[i];
+    y[i] += yspeed[i];
 
     // Check if this ellipse got out of the screen,
     // and if so, fix it.
