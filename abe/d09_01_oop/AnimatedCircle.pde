@@ -46,7 +46,7 @@ class AnimatedCircle {
   // (position, for instance).
   void paint() {
     fill(circleColor);
-    ellipse(x, y, 20, 20);
+    ellipse(x, y, sz, sz);
     
     x += xspeed;
     y += yspeed;
