@@ -1,15 +1,23 @@
+int amount = 10;
+AnimatedCircle[] circles;
+
 void setup() {
   size(300, 300, P2D);
 
-  AnimatedCircle circle1 = new AnimatedCircle(55, 60, 20);
-  
-  AnimatedCircle circle2;
-  circle2 = new AnimatedCircle(22, 55, 50);
-    
-  circle1.paint();
-  circle2.paint();
+  circles = new AnimatedCircle[amount];
+  for (int i=0; i<amount; i++) {
+    circles[i] = new AnimatedCircle(
+      random(width), 
+      random(height), 
+      random(5, 20)
+    ); 
+  }
 }
 
 void draw() {
+  background(255);
+  for (int i=0; i<amount; i++) {
+    circles[i].paint();   
+  }
 }
 
