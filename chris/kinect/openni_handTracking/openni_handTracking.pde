@@ -52,6 +52,6 @@ void onLostHand(SimpleOpenNI curContext,int handId){
 
 // ----------------------------------------------------------------- // gesture events
 void onCompletedGesture(SimpleOpenNI curContext,int gestureType, PVector pos){
-  int handId = context.startTrackingHand(pos);
+  int handId = kinect.startTrackingHand(pos);
 }
 
