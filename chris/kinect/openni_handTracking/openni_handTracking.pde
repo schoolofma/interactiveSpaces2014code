@@ -6,15 +6,15 @@ PVector currentHand;
 PVector previousHand;
 
 void setup() { 
+  
   size(640, 480);
   kinect = new SimpleOpenNI(this); 
   kinect.setMirror(true);
   //enable depthMap generation 
   kinect.enableDepth(); 
-  // enable hands + gesture generation  
-  kinect.enableGesture(); 
-  kinect.enableHands();
-  kinect.addGesture("RaiseHand");
+  // enable hands + start gesture generation  
+  kinect.enableHand();
+  kinect.startGesture(SimpleOpenNI.GESTURE_WAVE);
   handPositions = new ArrayList();
   stroke(255, 0, 0); 
   strokeWeight(2);
@@ -24,36 +24,34 @@ void draw() {
   kinect.update(); 
   image(kinect.depthImage(), 0, 0);
 
-  for (int i = 1; i < handPositions.size(); i++) { 
+  for (int i = 1; i < handPositions.size(); i++) {
     currentHand = handPositions.get(i); 
     previousHand = handPositions.get(i-1); 
-    line(previousHand.x, previousHand.y, currentHand.x, currentHand.y);
+    PVector pA = new PVector();
+    PVector pB = new PVector();
+    kinect.convertRealWorldToProjective(currentHand, pA); 
+    kinect.convertRealWorldToProjective(previousHand, pB); 
+    line(pB.x, pB.y, pA.x, pA.y);
   }
 
 }
 
 // ----------------------------------------------------------------- // hand events
 
-void onCreateHands(int handId, PVector position, float time) {
-  kinect.convertRealWorldToProjective(position, position); 
-  handPositions.add(position);
+void onNewHand(SimpleOpenNI curContext,int handId,PVector pos){
+  handPositions.add(pos);
 }
 
-void onUpdateHands(int handId, PVector position, float time) { 
-  kinect.convertRealWorldToProjective(position, position); 
-  handPositions.add(position);
+void onTrackedHand(SimpleOpenNI curContext,int handId,PVector pos){
+  handPositions.add(pos);
 }
 
-void onDestroyHands(int handId, float time) { 
+void onLostHand(SimpleOpenNI curContext,int handId){
   handPositions.clear(); 
-  kinect.addGesture("RaiseHand");
 }
 
 // ----------------------------------------------------------------- // gesture events
-
-void onRecognizeGesture(String strGesture, PVector idPosition, PVector endPosition)
-{
-  kinect.startTrackingHands(endPosition); 
-  kinect.removeGesture("RaiseHand");
+void onCompletedGesture(SimpleOpenNI curContext,int gestureType, PVector pos){
+  int handId = context.startTrackingHand(pos);
 }
 
